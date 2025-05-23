@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark-subtle">
+    <div class="row justify-content-center mt-5">
+        <div class="col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="card p-4 rounded-3 border-primary-subtle">
+                <h1 class="fs-4 text-primary">To Do List</h1>
+                <div class="d-flex bg-se border border-primary rounded-pill overflow-hidden mb-4">
+                    <input type="text" id="textInput" class="form-control flex-grow-1 border-0 text-primary-emphasis" placeholder="Add your text">
+                    <button class="btn btn-primary rounded-0 border-primary px-4" onclick="addTodoList()">Add</button>
+                </div>
+                <ul class="list-unstyled mb-0" id="listContainer"></ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const listContainer = document.getElementById('listContainer');
+
+        function addTodoList() {
+            
+            if (textInput.value === '') {
+                alert('Please type something!')
+            } else{
+                var li = document.createElement("li");
+                li.innerHTML = textInput.value;
+                li.classList.add('position-relative');
+                listContainer.appendChild(li);
+
+                var span = document.createElement("span");
+                span.innerHTML = '\u00d7';
+                li.appendChild(span);
+                saveData()
+                textInput.value = '';
+            };
+        };
+
+        listContainer.addEventListener('click', (e)=>{
+            if(e.target.tagName === 'LI'){
+                e.target.classList.toggle('checked');
+                saveData()
+            } else if (e.target.tagName === 'SPAN'){
+                e.target.parentElement.remove();
+                saveData()
+            };
+        }, false);
+
+        function saveData() {
+            localStorage.setItem('data', listContainer.innerHTML);
+        }
+
+        function showData() {
+            listContainer.innerHTML = localStorage.getItem('data');
+        }
+
+        showData();
+
+    </script>
+</body>
+</html>
